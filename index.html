@@ -485,6 +485,32 @@ code {
   color: var(--text);
 }
 
+/* ── example block ── */
+.example-block {
+  margin-top: 14px;
+  background: var(--tag-bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+}
+
+.example-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.example-text {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.75;
+  font-style: italic;
+}
+
 /* ── cost table ── */
 .cost-table-wrap {
   border: 1px solid var(--border);
@@ -711,11 +737,18 @@ code {
           유저와 캐릭터의 신체 정보, 신체 특징, 성감대 등을 직접 입력해두면
           확장 프로그램이 해당 내용을 AI 프롬프트에 자동으로 반영해 더 일관된 묘사를 만들어냅니다.
         </p>
+        <p style="color:var(--accent);font-size:14px;font-weight:500;">
+          ✦ 모든 항목은 반드시 영어로 입력해주세요. 한국어로 입력하면 AI가 제대로 이해하지 못해 묘사 품질이 낮아질 수 있습니다.
+        </p>
         <ul class="detail-list">
           <li><strong>User 탭</strong> — 유저의 신체 묘사, 특징적인 마크, 성감대를 입력합니다.</li>
           <li><strong>Character 탭</strong> — 캐릭터의 신체 묘사, 특징, 성감대를 입력합니다.</li>
           <li>저장 버튼을 누르면 즉시 프롬프트에 반영됩니다.</li>
         </ul>
+        <div class="example-block">
+          <div class="example-label">입력 예시 (User · Body)</div>
+          <div class="example-text">Slender build with a small waist and soft curves. Medium-sized breasts with light pink nipples. Smooth fair skin that flushes easily when aroused. A small mole below the left collarbone.</div>
+        </div>
       </div>
     </div>
 
