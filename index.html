@@ -485,7 +485,77 @@ code {
   color: var(--text);
 }
 
-/* ── footer ── */
+/* ── notice ── */
+.notice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notice-card {
+  border-radius: 12px;
+  border: 1px solid;
+  overflow: hidden;
+}
+
+.notice-card.warn {
+  background: #fffbf0;
+  border-color: #f0d080;
+}
+
+.notice-card.info {
+  background: #f0f6ff;
+  border-color: #b8d4f4;
+}
+
+.notice-card.danger {
+  background: #fff5f5;
+  border-color: #f4c0c0;
+}
+
+.notice-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px 12px;
+}
+
+.notice-icon { font-size: 18px; }
+
+.notice-title {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.notice-body {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.75;
+  padding: 0 20px 16px 20px;
+}
+
+.notice-ul {
+  list-style: none;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.notice-ul li {
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.notice-ul li::before {
+  content: "→";
+  color: var(--hint);
+  flex-shrink: 0;
+}
+
+
 .site-footer {
   margin-top: 80px;
   padding-top: 24px;
@@ -538,6 +608,7 @@ code {
       <li><a href="#apps"><span class="toc-num">02</span><span>메인 앱 4종 — APPS</span></a></li>
       <li><a href="#vault"><span class="toc-num">03</span><span>Vault — 캐릭터 전용 공간</span></a></li>
       <li><a href="#toolbar"><span class="toc-num">04</span><span>NSFW Toolbar — 빠른 태그</span></a></li>
+      <li><a href="#notice"><span class="toc-num">05</span><span>알아두어야 할 점</span></a></li>
     </ul>
   </nav>
 
@@ -875,6 +946,60 @@ code {
           <div class="step-desc">Toolbar 태그 관리 화면 하단의 <strong>커스텀 태그 전체 초기화</strong> 버튼으로 추가한 커스텀 태그를 모두 삭제할 수 있습니다.</div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── 05 NOTICE ── -->
+  <section class="doc-section" id="notice">
+    <div class="section-num">05</div>
+    <h2 class="section-title">알아두어야 할 점</h2>
+    <p class="section-intro">
+      사용 전에 미리 알아두면 좋은 제한 사항과 알려진 이슈입니다.
+    </p>
+
+    <div class="notice-list">
+
+      <div class="notice-card warn">
+        <div class="notice-header">
+          <div class="notice-icon">⚠️</div>
+          <div class="notice-title">메인 API에서만 작동합니다</div>
+        </div>
+        <div class="notice-body">
+          NSFW Toolbar는 채팅 입력창과 직접 연계되는 방식으로 동작하기 때문에,
+          현재 <strong>메인 API 연결 상태에서만 정상 작동</strong>합니다.
+        </div>
+      </div>
+
+      <div class="notice-card info">
+        <div class="notice-header">
+          <div class="notice-icon">🖥️</div>
+          <div class="notice-title">콘솔에 POST 오류가 떠도 무시하세요</div>
+        </div>
+        <div class="notice-body">
+          브라우저 개발자 도구 콘솔에 <code>POST ...</code> 형태의 오류 메시지가 표시될 수 있습니다.
+          이는 확장 프로그램의 내부 통신 과정에서 발생하는 것으로, <strong>실제 사용에는 영향이 없습니다.</strong>
+          안심하고 무시하셔도 됩니다.
+        </div>
+      </div>
+
+      <div class="notice-card danger">
+        <div class="notice-header">
+          <div class="notice-icon">🐢</div>
+          <div class="notice-title">오류가 쌓이면 느려질 수 있어요</div>
+        </div>
+        <div class="notice-body">
+          위 POST 오류가 장시간 사용 중 누적되면 브라우저가 조금씩 느려질 수 있습니다.
+          다음 두 가지 방법으로 간단히 초기화됩니다.
+          <ul class="notice-ul">
+            <li><strong>페이지 새로고침</strong> — 오류 로그가 모두 초기화됩니다.</li>
+            <li><strong>다른 캐릭터로 전환</strong> — 전환 시점에 자동으로 초기화됩니다.</li>
+          </ul>
+          장시간 같은 캐릭터로 사용할 때는 가끔 새로고침해 주는 것을 권장합니다.
+        </div>
+      </div>
+
     </div>
   </section>
 
