@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Peaches & Cream — SillyTavern 확장 프로그램 가이드</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #fafaf8;
+  --surface: #ffffff;
+  --border: #e8e4dc;
+  --text: #1a1a18;
+  --muted: #888880;
+  --hint: #b8b4ac;
+  --accent: #c84b6e;
+  --accent-bg: #fdf0f3;
+  --accent-border: #f4c8d4;
+  --tag-bg: #f4f2ee;
+  --tag-nsfw-bg: #fff0f3;
+  --tag-nsfw: #c84b6e;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── layout ── */
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px 120px;
+}
+
+/* ── header ── */
+.site-header {
+  padding: 56px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+
+.header-eyebrow {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+
+.header-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 44px;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.header-desc {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 540px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.header-meta {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.meta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 4px 12px;
+}
+
+/* ── toc ── */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin-bottom: 48px;
+}
+
+.toc-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--hint);
+  margin-bottom: 12px;
+}
+
+.toc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toc-list a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 5px 0;
+  transition: color 0.15s;
+}
+
+.toc-list a:hover { color: var(--text); }
+.toc-list a span { font-size: 13px; }
+.toc-num {
+  font-size: 11px;
+  color: var(--hint);
+  min-width: 18px;
+}
+
+/* ── sections ── */
+.doc-section {
+  margin-bottom: 56px;
+  scroll-margin-top: 24px;
+}
+
+.section-num {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
+  color: var(--text);
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.section-intro {
+  font-size: 15px;
+  color: var(--muted);
+  margin-bottom: 28px;
+  max-width: 600px;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 48px 0;
+}
+
+/* ── purpose block ── */
+.purpose-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.purpose-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+
+.purpose-card-icon {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.purpose-card-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.purpose-card-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── app cards ── */
+.app-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.app-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.app-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--tag-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.app-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+
+.app-sub {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.app-body {
+  padding: 18px 24px;
+}
+
+.app-body p {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+
+.app-body p:last-child { margin-bottom: 0; }
+
+.detail-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.detail-list li {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.detail-list li::before {
+  content: "—";
+  color: var(--hint);
+  flex-shrink: 0;
+}
+
+/* ── vault ── */
+.vault-header {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px 12px 0 0;
+  padding: 20px 24px;
+  border-bottom: none;
+}
+
+.vault-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.vault-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #1a1a18;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.vault-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.vault-sub-text {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.vault-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0;
+  border: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 12px 12px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.vault-item {
+  padding: 16px 20px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.vault-item:nth-child(2n) { border-right: none; }
+.vault-item:nth-last-child(-n+2) { border-bottom: none; }
+
+.vault-item-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.vault-item-icon { font-size: 16px; }
+
+.vault-item-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.vault-item-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ── toolbar ── */
+.toolbar-demo {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.toolbar-demo-bar {
+  background: #f4f2ee;
+  border-bottom: 1px solid var(--border);
+  padding: 8px 16px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--hint);
+}
+
+.toolbar-demo-body {
+  padding: 16px 20px;
+}
+
+.tgroup {
+  margin-bottom: 16px;
+}
+
+.tgroup:last-child { margin-bottom: 0; }
+
+.tgroup-name {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--hint);
+  margin-bottom: 8px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 400;
+  background: var(--tag-bg);
+  color: #555550;
+  border: 1px solid var(--border);
+}
+
+.tag.nsfw {
+  background: var(--tag-nsfw-bg);
+  color: var(--tag-nsfw);
+  border-color: var(--accent-border);
+}
+
+.tag.custom {
+  background: var(--surface);
+  border-style: dashed;
+  color: var(--hint);
+}
+
+/* ── how-to steps ── */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.step {
+  display: flex;
+  gap: 20px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+
+.step:last-child { border-bottom: none; }
+
+.step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.step-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.step-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+code {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  background: var(--tag-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--text);
+}
+
+/* ── footer ── */
+.site-footer {
+  margin-top: 80px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--hint);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ── responsive ── */
+@media (max-width: 560px) {
+  .header-title { font-size: 32px; }
+  .purpose-grid { grid-template-columns: 1fr; }
+  .vault-grid { grid-template-columns: 1fr; }
+  .vault-item { border-right: none; }
+  .vault-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
+  .vault-item:last-child { border-bottom: none; }
+  .page { padding: 0 16px 80px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ── HEADER ── -->
+  <header class="site-header">
+    <div class="header-eyebrow">SillyTavern Extension</div>
+    <h1 class="header-title">Peaches &amp; Cream</h1>
+    <p class="header-desc">
+      SillyTavern 채팅을 더 풍부하게 만들어주는 NSFW 컴패니언 확장 프로그램입니다.
+      캐릭터와의 롤플레이를 다양한 앱과 빠른 툴바로 보조합니다.
+    </p>
+    <div class="header-meta">
+      <span class="meta-badge">v2.6.0</span>
+      <span class="meta-badge">한국어 지원</span>
+      <span class="meta-badge">18+</span>
+    </div>
+  </header>
+
+  <!-- ── TOC ── -->
+  <nav class="toc">
+    <div class="toc-label">목차</div>
+    <ul class="toc-list">
+      <li><a href="#purpose"><span class="toc-num">01</span><span>확장 프로그램 목적</span></a></li>
+      <li><a href="#apps"><span class="toc-num">02</span><span>메인 앱 4종 — APPS</span></a></li>
+      <li><a href="#vault"><span class="toc-num">03</span><span>Vault — 캐릭터 전용 공간</span></a></li>
+      <li><a href="#toolbar"><span class="toc-num">04</span><span>NSFW Toolbar — 빠른 태그</span></a></li>
+    </ul>
+  </nav>
+
+  <!-- ── 01 PURPOSE ── -->
+  <section class="doc-section" id="purpose">
+    <div class="section-num">01</div>
+    <h2 class="section-title">확장 프로그램 목적</h2>
+    <p class="section-intro">
+      Peaches &amp; Cream은 SillyTavern 위에서 동작하는 팝업 앱입니다.
+      채팅 자체를 건드리지 않고, 캐릭터·유저 정보를 저장하거나
+      AI로 다양한 콘텐츠를 생성해 롤플레이 경험을 풍부하게 만들어줍니다.
+    </p>
+    <div class="purpose-grid">
+      <div class="purpose-card">
+        <div class="purpose-card-icon">💾</div>
+        <div class="purpose-card-title">정보 저장 & 프롬프트 반영</div>
+        <div class="purpose-card-desc">유저와 캐릭터의 신체·성향 정보를 저장하고, 저장된 데이터를 AI 프롬프트에 자동으로 주입해 생성 품질을 높입니다.</div>
+      </div>
+      <div class="purpose-card">
+        <div class="purpose-card-icon">✨</div>
+        <div class="purpose-card-title">AI 콘텐츠 생성</div>
+        <div class="purpose-card-desc">채팅 맥락을 읽어 후기, 꿈 일기, 반성문, 독백 등 다양한 창작 콘텐츠를 자동으로 생성합니다.</div>
+      </div>
+      <div class="purpose-card">
+        <div class="purpose-card-icon">🎮</div>
+        <div class="purpose-card-title">미니 게임 & 인터랙션</div>
+        <div class="purpose-card-desc">Red Flag 퀴즈, Clinic Q&amp;A 등 채팅 외의 인터랙티브한 경험을 제공합니다.</div>
+      </div>
+      <div class="purpose-card">
+        <div class="purpose-card-icon">⚡</div>
+        <div class="purpose-card-title">빠른 액션 태그</div>
+        <div class="purpose-card-desc">채팅창 하단 툴바에서 태그 하나로 원하는 행동을 AI에게 즉시 지시할 수 있습니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── 02 APPS ── -->
+  <section class="doc-section" id="apps">
+    <div class="section-num">02</div>
+    <h2 class="section-title">메인 앱 4종</h2>
+    <p class="section-intro">
+      홈 화면 APPS 섹션에 있는 4가지 앱입니다. 어떤 캐릭터와 대화 중이든 공통으로 사용할 수 있습니다.
+    </p>
+
+    <!-- Profile -->
+    <div class="app-card">
+      <div class="app-card-header">
+        <div class="app-icon-box">👤</div>
+        <div>
+          <div class="app-name">Profile</div>
+          <div class="app-sub">유저 & 캐릭터 신체 정보 관리</div>
+        </div>
+      </div>
+      <div class="app-body">
+        <p>
+          유저와 캐릭터의 신체 정보, 신체 특징, 성감대 등을 직접 입력해두면
+          확장 프로그램이 해당 내용을 AI 프롬프트에 자동으로 반영해 더 일관된 묘사를 만들어냅니다.
+        </p>
+        <ul class="detail-list">
+          <li><strong>User 탭</strong> — 유저의 신체 묘사, 특징적인 마크, 성감대를 입력합니다.</li>
+          <li><strong>Character 탭</strong> — 캐릭터의 신체 묘사, 특징, 성감대를 입력합니다.</li>
+          <li>저장 버튼을 누르면 즉시 프롬프트에 반영됩니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Red Flag -->
+    <div class="app-card">
+      <div class="app-card-header">
+        <div class="app-icon-box">🚩</div>
+        <div>
+          <div class="app-name">Red Flag</div>
+          <div class="app-sub">캐릭터 행동 판정 퀴즈</div>
+        </div>
+      </div>
+      <div class="app-body">
+        <p>
+          AI가 현재 캐릭터의 행동이나 습관을 카드 형태로 3개 생성합니다.
+          유저는 각 카드에 대해 <strong>"🚩 레드 플래그"</strong> 또는 <strong>"😍 오히려 좋아"</strong>를 선택하고,
+          선택 후에는 캐릭터의 실제 반응도 AI가 생성해줍니다.
+        </p>
+        <ul class="detail-list">
+          <li>캐릭터 정보를 바탕으로 AI가 카드를 생성합니다.</li>
+          <li>3장이 끝나면 레드 플래그 / 오히려 좋아 집계 결과를 보여줍니다.</li>
+          <li>매번 새로운 카드가 생성되어 중복이 없습니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Clinic -->
+    <div class="app-card">
+      <div class="app-card-header">
+        <div class="app-icon-box">🩺</div>
+        <div>
+          <div class="app-name">Clinic</div>
+          <div class="app-sub">가상 산부인과 Q&amp;A</div>
+        </div>
+      </div>
+      <div class="app-body">
+        <p>
+          성적인 주제에 대해 궁금한 점을 입력하면, 개성 있는 가상의 산부인과 의사가 답변해줍니다.
+          의사는 매번 랜덤으로 배정되며 각자 다른 말투와 성격을 가지고 있습니다.
+        </p>
+        <ul class="detail-list">
+          <li>Dr. Harrison (엄격), Dr. Emily Chen (놀란), Dr. Wallace (무덤덤), Dr. Park (열정적) 중 랜덤 배정</li>
+          <li>자주 묻는 질문 빠른 선택 버튼 제공 (거친 행위, 수갑, 애프터케어 등)</li>
+          <li>질문 입력 후 Enter 또는 버튼으로 바로 답변 받기 가능</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Sorry Not Sorry -->
+    <div class="app-card">
+      <div class="app-card-header">
+        <div class="app-icon-box">📝</div>
+        <div>
+          <div class="app-name">Sorry Not Sorry</div>
+          <div class="app-sub">반성문 & 탄원서 생성기</div>
+        </div>
+      </div>
+      <div class="app-body">
+        <p>
+          캐릭터가 잘못한 내용을 입력하면 공식 서식의 <strong>반성문</strong> 또는 <strong>탄원서</strong>를
+          AI가 생성합니다. 유머러스하지만 격식 있는 문서 형식으로 출력됩니다.
+        </p>
+        <ul class="detail-list">
+          <li><strong>Apology 탭</strong> — 반성문. 잘못, 변명, 다짐 섹션으로 구성된 공식 문서 형식</li>
+          <li><strong>Petition 탭</strong> — 탄원서. 피청원인·청원인·사유 포함, 도장 스타일 스탬프 포함</li>
+          <li>생성 전 어떤 행동에 대한 것인지 간단히 입력할 수 있습니다.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── 03 VAULT ── -->
+  <section class="doc-section" id="vault">
+    <div class="section-num">03</div>
+    <h2 class="section-title">Vault — 캐릭터 전용 공간</h2>
+    <p class="section-intro">
+      현재 대화 중인 캐릭터에 종속된 공간입니다. Vault 안의 앱들은 해당 캐릭터의
+      채팅 내용과 설정을 바탕으로 콘텐츠를 생성합니다.
+      캐릭터가 바뀌면 Vault의 내용도 달라집니다.
+    </p>
+
+    <div class="vault-header">
+      <div class="vault-header-inner">
+        <div class="vault-avatar">C</div>
+        <div>
+          <div class="vault-name">Character's Vault</div>
+          <div class="vault-sub-text">캐릭터 전용 공간 · 8가지 앱</div>
+        </div>
+      </div>
+    </div>
+    <div class="vault-grid">
+      <div class="vault-item">
+        <div class="vault-item-top">
+          <span class="vault-item-icon">⭐</span>
+          <span class="vault-item-name">Reviews</span>
+        </div>
+        <div class="vault-item-desc">캐릭터에 대한 별점 후기를 AI로 생성하고 누적 저장합니다. 평균 평점과 추천 비율도 자동 집계됩니다.</div>
+      </div>
+      <div class="vault-item">
+        <div class="vault-item-top">
+          <span class="vault-item-icon">💬</span>
+          <span class="vault-item-name">Off the Record</span>
+        </div>
+        <div class="vault-item-desc">
+          <strong>Caught Off Guard</strong> — 들켰을 때 캐릭터의 솔직한 반응 카드<br>
+          <strong>Dark Thoughts</strong> — 캐릭터가 속으로 품은 어두운 생각 카드
+        </div>
+      </div>
+      <div class="vault-item">
+        <div class="vault-item-top">
+          <span class="vault-item-icon">🌐</span>
+          <span class="vault-item-name">World Feed</span>
+        </div>
+        <div class="vault-item-desc">세계관 설정에 따라 SNS 피드 형태의 게시물을 생성합니다. 캐릭터 본인 게시물과 타 계정 피드가 섞여 나옵니다.</div>
+      </div>
+      <div class="vault-item">
+        <div class="vault-item-top">
+          <span class="vault-item-icon">🌙</span>
+          <span class="vault-item-name">Dream Log</span>
+        </div>
+        <div class="vault-item-desc">캐릭터가 꾼 꿈을 AI로 생성합니다. NSFW, 코믹, 이별, 싸움, 트라우마 등 7가지 타입 중 가중치 랜덤으로 결정됩니다.</div>
+      </div>
+      <div class="vault-item">
+        <div class="vault-item-top">
+          <span class="vault-item-icon">📂</span>
+          <span class="vault-item-name">Blackbox</span>
+        </div>
+        <div class="vault-item-desc">
+          <strong>Threat Mail</strong> — 캐릭터 앞으로 온 협박 편지 생성<br>
+          <strong>Complaints</strong> — 캐릭터에 대한 민원·불만 사례 생성
+        </div>
+      </div>
+      <div class="vault-item">
+        <div class="vault-item-top">
+          <span class="vault-item-icon">🎯</span>
+          <span class="vault-item-name">Wanted</span>
+        </div>
+        <div class="vault-item-desc">캐릭터의 죄목과 현상금을 생성하는 수배 시스템입니다. 재판 판결문(무죄/유죄)도 AI로 생성됩니다.</div>
+      </div>
+      <div class="vault-item">
+        <div class="vault-item-top">
+          <span class="vault-item-icon">✍️</span>
+          <span class="vault-item-name">Monologue</span>
+        </div>
+        <div class="vault-item-desc">이별, 기억, 만약이라면 등 감성적인 주제로 캐릭터의 1인칭 독백을 생성합니다. 매일 2개씩 새 주제가 제시됩니다.</div>
+      </div>
+      <div class="vault-item">
+        <div class="vault-item-top">
+          <span class="vault-item-icon">⚙️</span>
+          <span class="vault-item-name">Settings</span>
+        </div>
+        <div class="vault-item-desc">Vault 내 앱 설정을 관리합니다. World Feed의 세계관 그룹명, Dream Log 설정 등을 변경할 수 있습니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── 04 TOOLBAR ── -->
+  <section class="doc-section" id="toolbar">
+    <div class="section-num">04</div>
+    <h2 class="section-title">NSFW Toolbar</h2>
+    <p class="section-intro">
+      채팅창 하단에 나타나는 빠른 액션 태그 바입니다.
+      원하는 태그를 탭 하면 해당 행동을 AI에게 즉시 지시할 수 있습니다.
+    </p>
+
+    <!-- 데모 -->
+    <div class="toolbar-demo">
+      <div class="toolbar-demo-bar">Toolbar 미리보기 (채팅창 하단 표시)</div>
+      <div class="toolbar-demo-body">
+        <div class="tgroup">
+          <div class="tgroup-name">SFW</div>
+          <div class="tags">
+            <span class="tag">Kiss</span>
+            <span class="tag">Hug</span>
+            <span class="tag">Cuddle</span>
+            <span class="tag">Head Pat</span>
+            <span class="tag">Back Hug</span>
+            <span class="tag">Forehead Kiss</span>
+            <span class="tag">Pout</span>
+            <span class="tag">Whisper in Ear</span>
+          </div>
+        </div>
+        <div class="tgroup">
+          <div class="tgroup-name">Mood &amp; Place</div>
+          <div class="tags">
+            <span class="tag nsfw">Romantic</span>
+            <span class="tag nsfw">Dominant</span>
+            <span class="tag nsfw">Bed</span>
+            <span class="tag nsfw">Wall</span>
+          </div>
+        </div>
+        <div class="tgroup">
+          <div class="tgroup-name">Foreplay</div>
+          <div class="tags">
+            <span class="tag nsfw">Kissing</span>
+            <span class="tag nsfw">Fingering</span>
+            <span class="tag nsfw">Blowjob</span>
+            <span class="tag nsfw">Cunnilingus</span>
+          </div>
+        </div>
+        <div class="tgroup">
+          <div class="tgroup-name">Position</div>
+          <div class="tags">
+            <span class="tag nsfw">Missionary</span>
+            <span class="tag nsfw">Doggy</span>
+            <span class="tag nsfw">Cowgirl</span>
+            <span class="tag nsfw">Standing</span>
+          </div>
+        </div>
+        <div class="tgroup">
+          <div class="tgroup-name">Action</div>
+          <div class="tags">
+            <span class="tag nsfw">Slow</span>
+            <span class="tag nsfw">Fast</span>
+            <span class="tag nsfw">Rough</span>
+            <span class="tag nsfw">Penetrate</span>
+            <span class="tag nsfw">Continue</span>
+          </div>
+        </div>
+        <div class="tgroup">
+          <div class="tgroup-name">Finish &amp; Orgasm</div>
+          <div class="tags">
+            <span class="tag nsfw">Internal</span>
+            <span class="tag nsfw">External</span>
+            <span class="tag nsfw">On Body</span>
+            <span class="tag nsfw">Squirt</span>
+            <span class="tag nsfw">Scream</span>
+          </div>
+        </div>
+        <div class="tgroup" style="margin-bottom:0;">
+          <div class="tgroup-name">커스텀 태그 (예시)</div>
+          <div class="tags">
+            <span class="tag custom">+ 내 태그 추가</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 사용법 -->
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div>
+          <div class="step-title">툴바 켜기</div>
+          <div class="step-desc">Peaches &amp; Cream 팝업 홈 화면에서 <strong>NSFW Toolbar</strong> 토글을 ON으로 설정합니다. 채팅창 하단에 즉시 태그 바가 나타납니다.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div>
+          <div class="step-title">태그 탭해서 사용</div>
+          <div class="step-desc">원하는 태그를 탭하면 해당 행동이 AI에게 즉시 전달됩니다. 별도로 입력창에 타이핑할 필요가 없습니다.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div>
+          <div class="step-title">커스텀 태그 추가</div>
+          <div class="step-desc">홈 화면에서 <strong>Toolbar 태그 관리</strong>로 이동하면 각 그룹에 원하는 태그를 추가하거나 삭제할 수 있습니다. 회색으로 표시된 기본 태그는 삭제가 불가합니다.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div>
+          <div class="step-title">태그 전체 초기화</div>
+          <div class="step-desc">Toolbar 태그 관리 화면 하단의 <strong>커스텀 태그 전체 초기화</strong> 버튼으로 추가한 커스텀 태그를 모두 삭제할 수 있습니다.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <span>Peaches &amp; Cream v2.6.0 — SillyTavern Extension</span>
+    <span>18+ · NSFW</span>
+  </footer>
+
+</div>
+
+</body>
+</html>
