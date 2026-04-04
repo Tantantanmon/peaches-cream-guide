@@ -485,6 +485,47 @@ code {
   color: var(--text);
 }
 
+/* ── cost table ── */
+.cost-table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cost-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.cost-table thead tr {
+  background: var(--tag-bg);
+}
+
+.cost-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cost-table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+}
+
+.cost-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.cost-table tbody tr:nth-child(even) {
+  background: #fafaf8;
+}
+
 /* ── notice ── */
 .notice-list {
   display: flex;
@@ -608,7 +649,8 @@ code {
       <li><a href="#apps"><span class="toc-num">02</span><span>메인 앱 4종 — APPS</span></a></li>
       <li><a href="#vault"><span class="toc-num">03</span><span>Vault — 캐릭터 전용 공간</span></a></li>
       <li><a href="#toolbar"><span class="toc-num">04</span><span>NSFW Toolbar — 빠른 태그</span></a></li>
-      <li><a href="#notice"><span class="toc-num">05</span><span>알아두어야 할 점</span></a></li>
+      <li><a href="#cost"><span class="toc-num">05</span><span>토큰 이용 비용</span></a></li>
+      <li><a href="#notice"><span class="toc-num">06</span><span>알아두어야 할 점</span></a></li>
     </ul>
   </nav>
 
@@ -789,7 +831,7 @@ code {
           <span class="vault-item-icon">🌐</span>
           <span class="vault-item-name">World Feed</span>
         </div>
-        <div class="vault-item-desc">세계관 설정에 따라 SNS 피드 형태의 게시물을 생성합니다. 캐릭터 본인 게시물과 타 계정 피드가 섞여 나옵니다.</div>
+        <div class="vault-item-desc">X(트위터) 형태의 SNS 피드를 생성합니다. Vault Settings에서 세계관 등장인물을 추가하면 해당 인물들과 캐릭터의 상호작용 포스트가 함께 생성됩니다.</div>
       </div>
       <div class="vault-item">
         <div class="vault-item-top">
@@ -928,15 +970,19 @@ code {
       <div class="step">
         <div class="step-num">2</div>
         <div>
-          <div class="step-title">태그 탭해서 사용</div>
-          <div class="step-desc">원하는 태그를 탭하면 해당 행동이 AI에게 즉시 전달됩니다. 별도로 입력창에 타이핑할 필요가 없습니다.</div>
+          <div class="step-title">태그 탭해서 사용 — 다중 선택 가능</div>
+          <div class="step-desc">
+            원하는 태그를 탭하면 선택됩니다. <strong>Mood, Foreplay, Position, Action, Finish, Orgasm 그룹은 다중 선택이 가능합니다.</strong>
+            예를 들어 Mood에서 하나, Position에서 하나, Action에서 하나를 동시에 선택한 뒤 전송하면 조합된 행동이 AI에게 한 번에 전달됩니다.
+            단, <strong>SFW 그룹은 다중 선택이 되지 않으며</strong> 하나씩만 사용할 수 있습니다.
+          </div>
         </div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
         <div>
-          <div class="step-title">커스텀 태그 추가</div>
-          <div class="step-desc">홈 화면에서 <strong>Toolbar 태그 관리</strong>로 이동하면 각 그룹에 원하는 태그를 추가하거나 삭제할 수 있습니다. 회색으로 표시된 기본 태그는 삭제가 불가합니다.</div>
+          <div class="step-title">커스텀 태그 추가 — 반드시 영어로</div>
+          <div class="step-desc">홈 화면에서 <strong>Toolbar 태그 관리</strong>로 이동하면 각 그룹에 태그를 추가하거나 삭제할 수 있습니다. 커스텀 태그는 <strong>반드시 영어로 입력</strong>해야 합니다. 한국어나 다른 언어로 입력하면 AI가 올바르게 인식하지 못할 수 있습니다. 회색으로 표시된 기본 태그는 삭제가 불가합니다.</div>
         </div>
       </div>
       <div class="step">
@@ -951,9 +997,69 @@ code {
 
   <div class="divider"></div>
 
-  <!-- ── 05 NOTICE ── -->
-  <section class="doc-section" id="notice">
+  <!-- ── 05 COST ── -->
+  <section class="doc-section" id="cost">
     <div class="section-num">05</div>
+    <h2 class="section-title">토큰 이용 비용</h2>
+    <p class="section-intro">
+      Peaches &amp; Cream의 AI 생성 기능은 SillyTavern에 연결된 API를 그대로 사용합니다.
+      아래는 <strong>Gemini 3.1 Pro Preview</strong> 기준 참고 가격입니다.
+    </p>
+
+    <div class="cost-table-wrap">
+      <table class="cost-table">
+        <thead>
+          <tr>
+            <th>구분</th>
+            <th>200K 토큰 이하</th>
+            <th>200K 토큰 초과</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>입력 (Input)</td>
+            <td>$2.00 / 1M 토큰</td>
+            <td>$4.00 / 1M 토큰</td>
+          </tr>
+          <tr>
+            <td>출력 (Output)</td>
+            <td>$12.00 / 1M 토큰</td>
+            <td>$18.00 / 1M 토큰</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="notice-list" style="margin-top:16px;">
+      <div class="notice-card info">
+        <div class="notice-header">
+          <div class="notice-icon">💡</div>
+          <div class="notice-title">실제 사용 비용은 매우 적습니다</div>
+        </div>
+        <div class="notice-body">
+          앱 하나가 호출하는 토큰은 대부분 수백~수천 토큰 수준입니다.
+          1M 토큰 = 약 75만 단어 분량이므로, 일반적인 개인 사용에서는 비용이 거의 발생하지 않습니다.
+          채팅 자체의 토큰 사용량과 합산되어 청구된다는 점은 참고해 두세요.
+        </div>
+      </div>
+      <div class="notice-card warn">
+        <div class="notice-header">
+          <div class="notice-icon">⚠️</div>
+          <div class="notice-title">Preview 모델이라 가격이 변동될 수 있습니다</div>
+        </div>
+        <div class="notice-body">
+          Gemini 3.1 Pro Preview는 정식 출시 전 모델로, 향후 가격이 변경될 수 있습니다.
+          최신 가격은 <a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" style="color:var(--accent);">Google AI 공식 가격 페이지</a>에서 확인하세요.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ── 06 NOTICE ── -->
+  <section class="doc-section" id="notice">
+    <div class="section-num">06</div>
     <h2 class="section-title">알아두어야 할 점</h2>
     <p class="section-intro">
       사용 전에 미리 알아두면 좋은 제한 사항과 알려진 이슈입니다.
