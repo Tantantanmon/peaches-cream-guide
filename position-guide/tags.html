@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Toolbar Tag Guide — Peaches & Cream</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #fafaf8;
+  --surface: #ffffff;
+  --border: #e8e4dc;
+  --text: #1a1a18;
+  --muted: #888880;
+  --hint: #b8b4ac;
+  --accent: #c84b6e;
+  --accent-bg: #fdf0f3;
+  --accent-border: #f4c8d4;
+  --tag-bg: #f4f2ee;
+  --green-bg: #f0f7ed;
+  --green: #3a7d2c;
+  --blue-bg: #edf4fc;
+  --blue: #1a5fa8;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+.page { max-width: 760px; margin: 0 auto; padding: 0 24px 120px; }
+
+.site-header {
+  padding: 48px 0 36px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+.header-eyebrow {
+  font-size: 12px; font-weight: 500; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+}
+.header-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 38px; line-height: 1.1; color: var(--text); margin-bottom: 12px;
+}
+.header-desc { font-size: 15px; color: var(--muted); max-width: 520px; line-height: 1.7; }
+
+.section {
+  margin-top: 48px;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.section-icon.sfw { background: var(--green-bg); }
+.section-icon.nsfw { background: var(--accent-bg); }
+.section-icon.position { background: var(--blue-bg); }
+
+.section-title { font-size: 18px; font-weight: 500; color: var(--text); }
+.section-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+.tag-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tag-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #f0ece4;
+}
+.tag-row:last-child { border-bottom: none; }
+
+.tag-pill {
+  display: inline-block;
+  border-radius: 99px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 110px;
+  text-align: center;
+}
+.tag-pill.sfw { background: var(--green-bg); color: var(--green); }
+.tag-pill.nsfw { background: var(--accent-bg); color: var(--accent); }
+.tag-pill.custom-sfw { background: #fff8e0; color: #8a6000; border: 1px dashed #e0c060; }
+.tag-pill.custom-nsfw { background: #fff0f3; color: var(--accent); border: 1px dashed var(--accent-border); }
+.tag-pill.position { background: var(--blue-bg); color: var(--blue); }
+.tag-pill.custom-position { background: var(--blue-bg); color: var(--blue); border: 1px dashed #90b8e0; }
+
+.tag-info { flex: 1; }
+.tag-name { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.tag-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+.custom-badge {
+  display: inline-block;
+  background: #fff8e0;
+  color: #8a6000;
+  border-radius: 99px;
+  padding: 1px 8px;
+  font-size: 10px;
+  font-weight: 500;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.custom-badge.nsfw {
+  background: #fff0f3;
+  color: var(--accent);
+}
+
+.tip-box {
+  background: var(--tag-bg);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.divider { height: 1px; background: var(--border); margin: 48px 0 0; }
+.credit { margin-top: 16px; font-size: 12px; color: var(--hint); }
+
+@media (max-width: 560px) {
+  .header-title { font-size: 28px; }
+  .page { padding: 0 16px 80px; }
+  .tag-pill { min-width: 90px; font-size: 11px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="site-header">
+    <div class="header-eyebrow">Peaches & Cream · Toolbar Guide</div>
+    <h1 class="header-title">Toolbar Tag Guide</h1>
+    <p class="header-desc">
+      툴바의 모든 태그 설명이에요. 흰 배경은 기본 태그, 점선 테두리는 추천 커스텀 태그예요.
+      여러 그룹에서 자유롭게 골라 조합할 수 있어요.
+    </p>
+  </header>
+
+  <!-- SFW -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon sfw">🌿</div>
+      <div>
+        <div class="section-title">SFW</div>
+        <div class="section-sub">일상적인 스킨십과 애교 행동</div>
+      </div>
+    </div>
+    <div class="tag-list">
+      <div class="tag-row">
+        <span class="tag-pill sfw">Kiss</span>
+        <div class="tag-info">
+          <div class="tag-name">Kiss · 키스</div>
+          <div class="tag-desc">부드럽게 입술에 키스해달라고 요청해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill sfw">Hug</span>
+        <div class="tag-info">
+          <div class="tag-name">Hug · 안아줘</div>
+          <div class="tag-desc">꽉 안아달라고 해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill sfw">Cuddle</span>
+        <div class="tag-info">
+          <div class="tag-name">Cuddle · 껴안기</div>
+          <div class="tag-desc">나란히 누워 포근하게 껴안는 상황을 유도해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill sfw">Head Pat</span>
+        <div class="tag-info">
+          <div class="tag-name">Head Pat · 머리 쓰다듬기</div>
+          <div class="tag-desc">머리를 다정하게 쓰다듬어달라고 해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill sfw">Back Hug</span>
+        <div class="tag-info">
+          <div class="tag-name">Back Hug · 뒤에서 안기</div>
+          <div class="tag-desc">뒤에서 조용히 껴안는 상황을 연출해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill sfw">Forehead Kiss</span>
+        <div class="tag-info">
+          <div class="tag-name">Forehead Kiss · 이마 키스</div>
+          <div class="tag-desc">이마에 살며시 키스해달라고 해요. 다정하고 보호적인 분위기를 만들어요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill sfw">Pout</span>
+        <div class="tag-info">
+          <div class="tag-name">Pout · 삐지기</div>
+          <div class="tag-desc">캐릭터가 살짝 삐진 듯한 표정이나 행동을 취하도록 해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill sfw">Whisper in Ear</span>
+        <div class="tag-info">
+          <div class="tag-name">Whisper in Ear · 귀에 속삭이기</div>
+          <div class="tag-desc">귀에 바짝 다가와 뭔가를 속삭이는 상황을 만들어요.</div>
+        </div>
+      </div>
+      <!-- 추천 커스텀 SFW -->
+      <div class="tag-row">
+        <span class="tag-pill custom-sfw">Aegyo</span>
+        <div class="tag-info">
+          <div class="tag-name">Aegyo · 애교<span class="custom-badge">추천 커스텀</span></div>
+          <div class="tag-desc">캐릭터가 귀엽게 애교를 부리는 행동을 해요. 목소리를 높이거나 볼을 부풀리는 등의 반응이 나와요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-sfw">Beg for Kiss</span>
+        <div class="tag-info">
+          <div class="tag-name">Beg for Kiss · 키스 졸라<span class="custom-badge">추천 커스텀</span></div>
+          <div class="tag-desc">캐릭터가 키스해달라고 조르는 상황을 만들어요. 입술을 내밀거나 눈을 감고 기다리는 귀여운 반응이 나와요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-sfw">Sulk</span>
+        <div class="tag-info">
+          <div class="tag-name">Sulk · 투정<span class="custom-badge">추천 커스텀</span></div>
+          <div class="tag-desc">캐릭터가 투정을 부리는 상황이에요. 관심을 달라고 칭얼대거나 불만을 귀엽게 표현해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-sfw">Lap Pillow</span>
+        <div class="tag-info">
+          <div class="tag-name">Lap Pillow · 무릎 베기<span class="custom-badge">추천 커스텀</span></div>
+          <div class="tag-desc">캐릭터 무릎에 머리를 눕히거나 반대로 캐릭터가 눕히는 상황을 연출해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-sfw">Nose Kiss</span>
+        <div class="tag-info">
+          <div class="tag-name">Nose Kiss · 코 비비기<span class="custom-badge">추천 커스텀</span></div>
+          <div class="tag-desc">코를 맞대고 비비는 에스키모 키스 스타일의 귀여운 스킨십이에요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-sfw">Hand Hold</span>
+        <div class="tag-info">
+          <div class="tag-name">Hand Hold · 손 잡기<span class="custom-badge">추천 커스텀</span></div>
+          <div class="tag-desc">손을 꼭 잡아달라고 해요. 조용하고 따뜻한 분위기를 만들어줘요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-sfw">Cheek Kiss</span>
+        <div class="tag-info">
+          <div class="tag-name">Cheek Kiss · 볼 키스<span class="custom-badge">추천 커스텀</span></div>
+          <div class="tag-desc">볼에 가볍게 키스하는 달콤한 스킨십이에요.</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">💡 SFW 태그는 다른 그룹 태그와 함께 조합해서 쓸 수 있어요. 예를 들어 Cuddle + Slow + Romantic 조합으로 포근한 분위기를 만들 수 있어요.</div>
+  </div>
+
+  <!-- MOOD & PLACE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon nsfw">🌙</div>
+      <div>
+        <div class="section-title">Mood & Place</div>
+        <div class="section-sub">분위기와 장소 설정</div>
+      </div>
+    </div>
+    <div class="tag-list">
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Romantic</span>
+        <div class="tag-info">
+          <div class="tag-name">Romantic · 로맨틱</div>
+          <div class="tag-desc">부드럽고 감성적인 분위기로 설정해요. 다정한 말투와 천천히 이어지는 스킨십이 나와요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Dominant</span>
+        <div class="tag-info">
+          <div class="tag-name">Dominant · 지배적</div>
+          <div class="tag-desc">강하고 주도적인 분위기로 설정해요. 캐릭터가 적극적으로 이끄는 상황이 만들어져요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Bed</span>
+        <div class="tag-info">
+          <div class="tag-name">Bed · 침대</div>
+          <div class="tag-desc">장소를 침대로 설정해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Wall</span>
+        <div class="tag-info">
+          <div class="tag-name">Wall · 벽</div>
+          <div class="tag-desc">벽에 기대거나 밀어붙이는 상황을 설정해요. 강렬하고 즉흥적인 분위기예요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Angry</span>
+        <div class="tag-info">
+          <div class="tag-name">Angry · 앵그리</div>
+          <div class="tag-desc">화가 난 감정이 폭발하는 앵그리 섹스 분위기를 설정해요. Rough + Fast와 함께 쓰면 더욱 강렬해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-nsfw">Shower</span>
+        <div class="tag-info">
+          <div class="tag-name">Shower · 샤워<span class="custom-badge nsfw">추천 커스텀</span></div>
+          <div class="tag-desc">장소를 샤워실로 설정해요. 물소리와 습한 분위기가 더해져요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-nsfw">Sofa</span>
+        <div class="tag-info">
+          <div class="tag-name">Sofa · 소파<span class="custom-badge nsfw">추천 커스텀</span></div>
+          <div class="tag-desc">장소를 소파로 설정해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-nsfw">Gentle</span>
+        <div class="tag-info">
+          <div class="tag-name">Gentle · 부드럽게<span class="custom-badge nsfw">추천 커스텀</span></div>
+          <div class="tag-desc">전반적인 분위기를 부드럽고 조심스럽게 설정해요. Romantic보다 더 섬세한 느낌이에요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-nsfw">Passionate</span>
+        <div class="tag-info">
+          <div class="tag-name">Passionate · 격정적<span class="custom-badge nsfw">추천 커스텀</span></div>
+          <div class="tag-desc">감정이 폭발하는 듯한 뜨겁고 열정적인 분위기를 만들어요.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOREPLAY -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon nsfw">🔥</div>
+      <div>
+        <div class="section-title">Foreplay</div>
+        <div class="section-sub">전희 행동</div>
+      </div>
+    </div>
+    <div class="tag-list">
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Kissing</span>
+        <div class="tag-info">
+          <div class="tag-name">Kissing · 키싱</div>
+          <div class="tag-desc">깊고 열정적인 키스를 해요. Kiss(SFW)보다 더 강렬하고 관능적인 키스예요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Fingering</span>
+        <div class="tag-info">
+          <div class="tag-name">Fingering · 핑거링</div>
+          <div class="tag-desc">손가락으로 자극하는 행위예요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Blowjob</span>
+        <div class="tag-info">
+          <div class="tag-name">Blowjob · 펠라치오</div>
+          <div class="tag-desc">구강 애무(남성 대상)예요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Cunnilingus</span>
+        <div class="tag-info">
+          <div class="tag-name">Cunnilingus · 커닐링구스</div>
+          <div class="tag-desc">구강 애무(여성 대상)예요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-nsfw">Neck Kiss</span>
+        <div class="tag-info">
+          <div class="tag-name">Neck Kiss · 목 키스<span class="custom-badge nsfw">추천 커스텀</span></div>
+          <div class="tag-desc">목에 키스하거나 살짝 깨무는 행위예요. 감각이 예민한 부위라 강한 반응이 나와요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-nsfw">Groping</span>
+        <div class="tag-info">
+          <div class="tag-name">Groping · 애무<span class="custom-badge nsfw">추천 커스텀</span></div>
+          <div class="tag-desc">몸 전체를 손으로 천천히 만지며 자극하는 행위예요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-nsfw">Nipple Play</span>
+        <div class="tag-info">
+          <div class="tag-name">Nipple Play · 유두 자극<span class="custom-badge nsfw">추천 커스텀</span></div>
+          <div class="tag-desc">가슴 및 유두를 자극하는 행위예요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-nsfw">Bite</span>
+        <div class="tag-info">
+          <div class="tag-name">Bite · 깨물기<span class="custom-badge nsfw">추천 커스텀</span></div>
+          <div class="tag-desc">목, 어깨, 귀 등을 살짝 깨무는 행위예요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-nsfw">Handjob</span>
+        <div class="tag-info">
+          <div class="tag-name">Handjob · 핸드잡<span class="custom-badge nsfw">추천 커스텀</span></div>
+          <div class="tag-desc">손으로 자극하는 행위(남성 대상)예요.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POSITION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon position">🛏️</div>
+      <div>
+        <div class="section-title">Position</div>
+        <div class="section-sub">체위 설정 — <a href="index.html" style="color:var(--accent);text-decoration:none;">이미지 가이드 보기 →</a></div>
+      </div>
+    </div>
+    <div class="tag-list">
+      <div class="tag-row">
+        <span class="tag-pill position">Missionary</span>
+        <div class="tag-info">
+          <div class="tag-name">Missionary · 정상위</div>
+          <div class="tag-desc">가장 기본. 아래 누운 상태에서 위에서 올라타는 방식. 마주 보며 친밀한 분위기.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill position">Doggy</span>
+        <div class="tag-info">
+          <div class="tag-name">Doggy · 후배위</div>
+          <div class="tag-desc">엎드린 상태에서 뒤에서 접근. 삽입이 깊고 자극이 강하며 지배적인 분위기.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill position">Cowgirl</span>
+        <div class="tag-info">
+          <div class="tag-name">Cowgirl · 여성상위</div>
+          <div class="tag-desc">위에서 올라타는 체위. 올라탄 쪽이 속도와 깊이를 주도해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill position">Standing</span>
+        <div class="tag-info">
+          <div class="tag-name">Standing · 스탠딩</div>
+          <div class="tag-desc">선 자세에서 하는 체위. 역동적이고 즉흥적인 분위기.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-position">Reverse Cowgirl</span>
+        <div class="tag-info">
+          <div class="tag-name">Reverse Cowgirl · 역여성상위<span class="custom-badge">추천 커스텀</span></div>
+          <div class="tag-desc">카우걸 반대 방향으로 올라타는 체위.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-position">Lotus</span>
+        <div class="tag-info">
+          <div class="tag-name">Lotus · 연꽃 자세<span class="custom-badge">추천 커스텀</span></div>
+          <div class="tag-desc">서로 마주 보며 껴안는 밀착도 최고의 체위.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-position">Spork</span>
+        <div class="tag-info">
+          <div class="tag-name">Spork · 스포크<span class="custom-badge">추천 커스텀</span></div>
+          <div class="tag-desc">한쪽 다리를 들어 90도 각도로 접근. 정면+후배위의 장점을 합친 체위.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-position">Pretzel Dip</span>
+        <div class="tag-info">
+          <div class="tag-name">Pretzel Dip · 프레첼 딥<span class="custom-badge">추천 커스텀</span></div>
+          <div class="tag-desc">옆으로 누워서 하는 체위. 눈 맞춤 가능한 후배위.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-position">Prone Bone</span>
+        <div class="tag-info">
+          <div class="tag-name">Prone Bone · 프론 본<span class="custom-badge">추천 커스텀</span></div>
+          <div class="tag-desc">완전히 엎드린 상태에서 하는 후배위 변형. 조여드는 느낌이 강해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-position">G-Whiz</span>
+        <div class="tag-info">
+          <div class="tag-name">G-Whiz · 지위즈<span class="custom-badge">추천 커스텀</span></div>
+          <div class="tag-desc">다리를 상대 어깨에 올리는 체위. G스팟 자극이 강해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-position">Ballet Dancer</span>
+        <div class="tag-info">
+          <div class="tag-name">Ballet Dancer · 발레 댄서<span class="custom-badge">추천 커스텀</span></div>
+          <div class="tag-desc">서서 마주 보며 한 다리를 올리는 스탠딩 변형.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTION -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon nsfw">⚡</div>
+      <div>
+        <div class="section-title">Action</div>
+        <div class="section-sub">행동 방식 지정</div>
+      </div>
+    </div>
+    <div class="tag-list">
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Slow</span>
+        <div class="tag-info">
+          <div class="tag-name">Slow · 천천히</div>
+          <div class="tag-desc">느리고 부드럽게 진행해요. 감각에 집중하는 분위기.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Fast</span>
+        <div class="tag-info">
+          <div class="tag-name">Fast · 빠르게</div>
+          <div class="tag-desc">빠른 속도로 강도를 높여요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Rough</span>
+        <div class="tag-info">
+          <div class="tag-name">Rough · 거칠게</div>
+          <div class="tag-desc">강하고 거칠게 진행해요. 지배적인 분위기와 잘 어울려요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Penetrate</span>
+        <div class="tag-info">
+          <div class="tag-name">Penetrate · 삽입</div>
+          <div class="tag-desc">삽입을 시작해요. Position 태그와 함께 써야 체위가 제대로 지정돼요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Continue</span>
+        <div class="tag-info">
+          <div class="tag-name">Continue · 계속</div>
+          <div class="tag-desc">현재 상황을 그대로 이어서 계속해달라고 해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-nsfw">Deep</span>
+        <div class="tag-info">
+          <div class="tag-name">Deep · 깊게<span class="custom-badge nsfw">추천 커스텀</span></div>
+          <div class="tag-desc">더 깊이 삽입하도록 유도해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-nsfw">Thrust</span>
+        <div class="tag-info">
+          <div class="tag-name">Thrust · 세게 밀어<span class="custom-badge nsfw">추천 커스텀</span></div>
+          <div class="tag-desc">강하게 밀어 넣는 동작을 강조해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-nsfw">Grind</span>
+        <div class="tag-info">
+          <div class="tag-name">Grind · 그라인딩<span class="custom-badge nsfw">추천 커스텀</span></div>
+          <div class="tag-desc">허리를 앞뒤가 아닌 원을 그리듯 움직이는 동작이에요.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINISH -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon nsfw">💧</div>
+      <div>
+        <div class="section-title">Finish</div>
+        <div class="section-sub">마무리 방식</div>
+      </div>
+    </div>
+    <div class="tag-list">
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Internal</span>
+        <div class="tag-info">
+          <div class="tag-name">Internal · 내부</div>
+          <div class="tag-desc">안에서 마무리해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">External</span>
+        <div class="tag-info">
+          <div class="tag-name">External · 외부</div>
+          <div class="tag-desc">밖에서 마무리해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">On Body</span>
+        <div class="tag-info">
+          <div class="tag-name">On Body · 몸에</div>
+          <div class="tag-desc">몸 위에서 마무리해요.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORGASM -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon nsfw">✨</div>
+      <div>
+        <div class="section-title">Orgasm</div>
+        <div class="section-sub">오르가즘 표현 방식</div>
+      </div>
+    </div>
+    <div class="tag-list">
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Squirt</span>
+        <div class="tag-info">
+          <div class="tag-name">Squirt · 스쿼트</div>
+          <div class="tag-desc">절정 시 분출을 묘사해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Scream</span>
+        <div class="tag-info">
+          <div class="tag-name">Scream · 소리 지르기</div>
+          <div class="tag-desc">절정 시 크게 소리를 내는 묘사를 해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-nsfw">Moan</span>
+        <div class="tag-info">
+          <div class="tag-name">Moan · 신음<span class="custom-badge nsfw">추천 커스텀</span></div>
+          <div class="tag-desc">절정 시 신음 소리를 내는 묘사를 강조해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill custom-nsfw">Tremble</span>
+        <div class="tag-info">
+          <div class="tag-name">Tremble · 떨기<span class="custom-badge nsfw">추천 커스텀</span></div>
+          <div class="tag-desc">절정 시 온몸이 떨리는 반응을 묘사해요.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FETISH -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon nsfw">⛓️</div>
+      <div>
+        <div class="section-title">Fetish</div>
+        <div class="section-sub">페티쉬 요소 추가</div>
+      </div>
+    </div>
+    <div class="tag-list">
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Tie</span>
+        <div class="tag-info">
+          <div class="tag-name">Tie · 묶기</div>
+          <div class="tag-desc">캐릭터가 유저를 묶는 상황을 연출해요. 손목, 발목 등을 구속하는 묘사가 나와요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Blindfold</span>
+        <div class="tag-info">
+          <div class="tag-name">Blindfold · 눈 가리기</div>
+          <div class="tag-desc">캐릭터가 유저의 눈을 가리는 상황이에요. 시각 차단으로 다른 감각이 예민해지는 묘사가 나와요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Choke</span>
+        <div class="tag-info">
+          <div class="tag-name">Choke · 목 조르기</div>
+          <div class="tag-desc">캐릭터가 유저의 목을 가볍게 조르는 묘사예요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Spank</span>
+        <div class="tag-info">
+          <div class="tag-name">Spank · 엉덩이 때리기</div>
+          <div class="tag-desc">캐릭터가 유저의 엉덩이를 때리는 묘사예요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Hair Pull</span>
+        <div class="tag-info">
+          <div class="tag-name">Hair Pull · 머리 잡아당기기</div>
+          <div class="tag-desc">캐릭터가 유저의 머리카락을 잡아당기는 묘사예요. 지배적인 분위기와 잘 어울려요.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TO CHAR -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon sfw">💝</div>
+      <div>
+        <div class="section-title">To {{char}}</div>
+        <div class="section-sub">유저가 캐릭터에게 하는 행동</div>
+      </div>
+    </div>
+    <div class="tag-list">
+      <div class="tag-row">
+        <span class="tag-pill sfw">Pat His Head</span>
+        <div class="tag-info">
+          <div class="tag-name">Pat His Head · 캐릭터 머리 쓰다듬기</div>
+          <div class="tag-desc">유저가 캐릭터의 머리를 다정하게 쓰다듬어요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill sfw">Pinch Cheek</span>
+        <div class="tag-info">
+          <div class="tag-name">Pinch Cheek · 볼 꼬집기</div>
+          <div class="tag-desc">유저가 캐릭터의 볼을 귀엽게 꼬집어요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill sfw">Tease</span>
+        <div class="tag-info">
+          <div class="tag-name">Tease · 놀리기</div>
+          <div class="tag-desc">유저가 캐릭터를 장난스럽게 놀려요. 캐릭터의 당황하거나 삐진 반응이 나와요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill sfw">Aegyo</span>
+        <div class="tag-info">
+          <div class="tag-name">Aegyo · 애교 부리기</div>
+          <div class="tag-desc">유저가 캐릭터에게 애교를 부려요. 캐릭터가 당황하거나 흐뭇해하는 반응이 나와요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Touch Him</span>
+        <div class="tag-info">
+          <div class="tag-name">Touch Him · 캐릭터 몸 만지기</div>
+          <div class="tag-desc">유저가 캐릭터의 몸을 만지고 탐색해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Kiss His Neck</span>
+        <div class="tag-info">
+          <div class="tag-name">Kiss His Neck · 목에 키스</div>
+          <div class="tag-desc">유저가 캐릭터의 목에 키스해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Bite His Neck</span>
+        <div class="tag-info">
+          <div class="tag-name">Bite His Neck · 목 깨물기</div>
+          <div class="tag-desc">유저가 캐릭터의 목을 살짝 깨물어요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Scratch His Back</span>
+        <div class="tag-info">
+          <div class="tag-name">Scratch His Back · 등 긁기</div>
+          <div class="tag-desc">유저가 캐릭터의 등을 손톱으로 긁어요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Ride</span>
+        <div class="tag-info">
+          <div class="tag-name">Ride · 올라타서 주도</div>
+          <div class="tag-desc">유저가 위에 올라타 속도와 깊이를 주도해요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Straddle</span>
+        <div class="tag-info">
+          <div class="tag-name">Straddle · 걸터앉기</div>
+          <div class="tag-desc">유저가 캐릭터 위에 걸터앉아요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Push Down</span>
+        <div class="tag-info">
+          <div class="tag-name">Push Down · 밀어서 눕히기</div>
+          <div class="tag-desc">유저가 캐릭터를 밀어서 눕혀요. 유저가 주도권을 가져가는 상황이에요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Grip His Waist</span>
+        <div class="tag-info">
+          <div class="tag-name">Grip His Waist · 허리 잡기</div>
+          <div class="tag-desc">유저가 캐릭터의 허리를 꽉 잡아요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Tie Him</span>
+        <div class="tag-info">
+          <div class="tag-name">Tie Him · 캐릭터 묶기</div>
+          <div class="tag-desc">유저가 캐릭터를 묶는 상황이에요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Blindfold Him</span>
+        <div class="tag-info">
+          <div class="tag-name">Blindfold Him · 캐릭터 눈 가리기</div>
+          <div class="tag-desc">유저가 캐릭터의 눈을 가려요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Spank Him</span>
+        <div class="tag-info">
+          <div class="tag-name">Spank Him · 캐릭터 엉덩이 때리기</div>
+          <div class="tag-desc">유저가 캐릭터의 엉덩이를 때려요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Choke Him</span>
+        <div class="tag-info">
+          <div class="tag-name">Choke Him · 캐릭터 목 조르기</div>
+          <div class="tag-desc">유저가 캐릭터의 목을 가볍게 조려요.</div>
+        </div>
+      </div>
+      <div class="tag-row">
+        <span class="tag-pill nsfw">Hair Pull Him</span>
+        <div class="tag-info">
+          <div class="tag-name">Hair Pull Him · 캐릭터 머리 잡아당기기</div>
+          <div class="tag-desc">유저가 캐릭터의 머리카락을 잡아당겨요.</div>
+        </div>
+      </div>
+    </div>
+    <div class="tip-box">💡 To {{char}} 그룹은 다른 모든 그룹과 자유롭게 조합할 수 있어요. 예를 들어 Push Down + Missionary + Rough 조합으로 유저가 주도하는 강렬한 상황을 만들 수 있어요.</div>
+  </div>
+
+  <div class="divider"></div>
+  <p class="credit">Peaches & Cream v2.6.0 · 흰 배경 = 기본 태그 / 점선 테두리 = 추천 커스텀 태그</p>
+
+</div>
+</body>
+</html>
