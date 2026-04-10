@@ -307,15 +307,15 @@ textarea::placeholder {
     <textarea id="input" placeholder="여기에 태그 리스트를 붙여넣으세요...
 
 예시:
-액션
-Edging
-Dirty Talk
-Hair pulling
+Mood
+Romantic
+Playful
+Cozy
 
-킨크
-Mirror Sex
-Blindfold
-Roleplay"></textarea>
+Aftercare
+Praise
+Pillow talk
+Stroking"></textarea>
     <div class="error" id="error"></div>
     <div class="btn-row">
       <button class="btn btn-primary" id="convert-btn">변환하기</button>
@@ -385,27 +385,65 @@ function parseInput(text) {
 }
 
 function groupsToJson(groups) {
+  const seen = new Set();
   const result = {
-    groups: groups.map(g => ({
-      id: 'custom_' + g.label.toLowerCase().replace(/[^a-z0-9가-힣]/g, '_').replace(/_+/g, '_'),
-      label: g.label,
-      tags: g.tags
-    })),
+    groups: groups.map(g => {
+      const unique = [...new Set(g.tags)].filter(t => {
+        if(seen.has(t)) return false;
+        seen.add(t);
+        return true;
+      });
+      return {
+        id: 'custom_' + g.label.toLowerCase().replace(/[^a-z0-9가-힣]/g, '_').replace(/_+/g, '_'),
+        label: g.label,
+        tags: unique
+      };
+    }),
     favoriteTags: []
   };
+  // remove duplicate group labels
+  const seenLabels = new Set();
+  result.groups = result.groups.filter(g => {
+    const key = g.label.toLowerCase();
+    if(seenLabels.has(key)) return false;
+    seenLabels.add(key);
+    return true;
+  });
   return JSON.stringify(result, null, 2);
 }
 
 function renderPreview(groups) {
   const preview = document.getElementById('preview');
   const stats = document.getElementById('stats');
-  const totalTags = groups.reduce((sum, g) => sum + g.tags.length, 0);
+  const origTotal = groups.reduce((sum, g) => sum + g.tags.length, 0);
+  // dedup within + cross group
+  const seen = new Set();
+  const seenLabels = new Set();
+  const dedupGroups = groups.filter(g => {
+    const key = g.label.toLowerCase();
+    if(seenLabels.has(key)) return false;
+    seenLabels.add(key);
+    return true;
+  }).map(g => {
+    const unique = [...new Set(g.tags)].filter(t => {
+      if(seen.has(t)) return false;
+      seen.add(t);
+      return true;
+    });
+    return { ...g, tags: unique };
+  });
+  const totalTags = dedupGroups.reduce((sum, g) => sum + g.tags.length, 0);
+  const removedTags = origTotal - totalTags;
+  const removedGroups = groups.length - dedupGroups.length;
 
   stats.innerHTML =
-    `<div class="stat"><strong>${groups.length}</strong> 그룹</div>` +
-    `<div class="stat"><strong>${totalTags}</strong> 태그</div>`;
+    `<div class="stat"><strong>${dedupGroups.length}</strong> 그룹</div>` +
+    `<div class="stat"><strong>${totalTags}</strong> 태그</div>` +
+    (removedTags > 0 || removedGroups > 0
+      ? `<div class="stat"><strong>${removedTags + removedGroups}</strong> 중복 제거됨</div>`
+      : '');
 
-  preview.innerHTML = groups.map(g =>
+  preview.innerHTML = dedupGroups.map(g =>
     `<div class="preview-group">
       <div class="preview-group-label">${g.label} (${g.tags.length})</div>
       <div class="preview-tags">${g.tags.map(t => `<span class="preview-tag">${t}</span>`).join('')}</div>
