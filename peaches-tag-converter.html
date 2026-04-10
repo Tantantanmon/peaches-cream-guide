@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍑 Peaches & Cream — Tag Converter</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #faf9f7;
+  --surface: #fff;
+  --text: #1a1a2e;
+  --text-sub: #6b6b7b;
+  --text-hint: #b0b0ba;
+  --border: #e8e8ec;
+  --accent: #1a1a2e;
+  --accent-light: #f0f0f4;
+  --peach: #f5a67b;
+  --peach-light: #fff4ef;
+  --peach-dark: #d4764a;
+  --danger: #e05050;
+  --success: #2a7a40;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.logo {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: var(--text-sub);
+  line-height: 1.6;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+.card-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-hint);
+  margin-bottom: 14px;
+}
+
+.format-guide {
+  background: var(--peach-light);
+  border: 1px solid #f0d8c8;
+  border-radius: var(--radius-sm);
+  padding: 18px 20px;
+  margin-bottom: 24px;
+  font-size: 13.5px;
+  color: #8a5a30;
+  line-height: 1.8;
+}
+
+.format-guide code {
+  font-family: var(--mono);
+  background: rgba(245,166,123,0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12.5px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 280px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text);
+  background: #fafafa;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+textarea:focus {
+  border-color: var(--peach);
+}
+
+textarea::placeholder {
+  color: var(--text-hint);
+}
+
+.btn-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.btn {
+  padding: 14px 28px;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--sans);
+  border: none;
+  transition: all 0.15s;
+}
+
+.btn:active { transform: scale(0.98); }
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  flex: 1;
+}
+
+.btn-primary:hover { background: #2a2a3e; }
+
+.btn-secondary {
+  background: var(--accent-light);
+  color: var(--text);
+}
+
+.btn-secondary:hover { background: #e4e4ea; }
+
+.btn-copy {
+  background: var(--peach);
+  color: #fff;
+  flex: 1;
+}
+
+.btn-copy:hover { background: var(--peach-dark); }
+
+.output-area {
+  display: none;
+}
+
+.output-area.show {
+  display: block;
+}
+
+.json-output {
+  width: 100%;
+  min-height: 200px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text);
+  background: #1a1a2e;
+  color: #e0e0e8;
+  resize: vertical;
+  outline: none;
+}
+
+.preview {
+  margin-top: 20px;
+}
+
+.preview-group {
+  margin-bottom: 16px;
+}
+
+.preview-group-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-sub);
+  margin-bottom: 8px;
+}
+
+.preview-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.preview-tag {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-sub);
+}
+
+.stats {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.stat {
+  background: var(--accent-light);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--text-sub);
+}
+
+.stat strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #fff;
+  padding: 10px 24px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.toast.show { opacity: 1; }
+
+.error {
+  color: var(--danger);
+  font-size: 13px;
+  margin-top: 8px;
+  display: none;
+}
+
+.error.show { display: block; }
+
+@media (max-width: 600px) {
+  .container { padding: 24px 16px 60px; }
+  h1 { font-size: 22px; }
+  .card { padding: 20px; }
+  textarea { min-height: 200px; }
+  .btn-row { flex-direction: column; }
+  .stats { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="logo">🍑</div>
+    <h1>Peaches & Cream Tag Converter</h1>
+    <p class="subtitle">텍스트 태그 리스트를 붙여넣으면<br>Toolbar Settings에서 바로 가져올 수 있는 JSON으로 변환해줘요.</p>
+  </header>
+
+  <div class="card">
+    <div class="card-label">입력 형식</div>
+    <div class="format-guide">
+      그룹 이름을 한 줄에 쓰고, 그 아래에 태그를 한 줄에 하나씩 적어주세요.<br>
+      빈 줄로 그룹을 구분해도 되고, 안 해도 돼요.<br><br>
+      <code>그룹이름1</code><br>
+      <code>태그1</code><br>
+      <code>태그2</code><br>
+      <code>태그3</code><br><br>
+      <code>그룹이름2</code><br>
+      <code>태그1</code><br>
+      <code>태그2</code><br><br>
+      그룹 이름은 한글/영어 다 돼요. 그룹 아래 태그가 없으면 빈 그룹으로 생성돼요.
+    </div>
+
+    <div class="card-label">텍스트 붙여넣기</div>
+    <textarea id="input" placeholder="여기에 태그 리스트를 붙여넣으세요...
+
+예시:
+액션
+Edging
+Dirty Talk
+Hair pulling
+
+킨크
+Mirror Sex
+Blindfold
+Roleplay"></textarea>
+    <div class="error" id="error"></div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="convert-btn">변환하기</button>
+      <button class="btn btn-secondary" id="clear-btn">초기화</button>
+    </div>
+  </div>
+
+  <div class="output-area" id="output-area">
+    <div class="card">
+      <div class="card-label">변환 결과</div>
+      <div class="stats" id="stats"></div>
+      <div class="preview" id="preview"></div>
+      <textarea class="json-output" id="json-output" readonly></textarea>
+      <div class="btn-row">
+        <button class="btn btn-copy" id="copy-btn">클립보드에 복사</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function parseInput(text) {
+  const lines = text.split('\n');
+  const groups = [];
+  let currentGroup = null;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    const nextNonEmpty = lines.slice(i + 1).find(l => l.trim());
+    const isLastLine = !nextNonEmpty;
+
+    if (!currentGroup) {
+      currentGroup = { label: line, tags: [] };
+      groups.push(currentGroup);
+      continue;
+    }
+
+    const looksLikeGroup = (
+      line.length < 30 &&
+      !line.includes('(') &&
+      !line.includes('/') &&
+      !line.includes(':') &&
+      !line.includes(',') &&
+      (i > 0 && !lines[i - 1].trim())
+    );
+
+    if (looksLikeGroup && currentGroup.tags.length > 0) {
+      currentGroup = { label: line, tags: [] };
+      groups.push(currentGroup);
+    } else {
+      currentGroup.tags.push(line);
+    }
+  }
+
+  return groups;
+}
+
+function groupsToJson(groups) {
+  const result = {
+    groups: groups.map(g => ({
+      id: 'custom_' + g.label.toLowerCase().replace(/[^a-z0-9가-힣]/g, '_').replace(/_+/g, '_'),
+      label: g.label,
+      tags: g.tags
+    })),
+    favoriteTags: []
+  };
+  return JSON.stringify(result, null, 2);
+}
+
+function renderPreview(groups) {
+  const preview = document.getElementById('preview');
+  const stats = document.getElementById('stats');
+  const totalTags = groups.reduce((sum, g) => sum + g.tags.length, 0);
+
+  stats.innerHTML =
+    `<div class="stat"><strong>${groups.length}</strong> 그룹</div>` +
+    `<div class="stat"><strong>${totalTags}</strong> 태그</div>`;
+
+  preview.innerHTML = groups.map(g =>
+    `<div class="preview-group">
+      <div class="preview-group-label">${g.label} (${g.tags.length})</div>
+      <div class="preview-tags">${g.tags.map(t => `<span class="preview-tag">${t}</span>`).join('')}</div>
+    </div>`
+  ).join('');
+}
+
+document.getElementById('convert-btn').onclick = () => {
+  const input = document.getElementById('input').value.trim();
+  const error = document.getElementById('error');
+  const outputArea = document.getElementById('output-area');
+
+  if (!input) {
+    error.textContent = '텍스트를 입력해주세요.';
+    error.classList.add('show');
+    outputArea.classList.remove('show');
+    return;
+  }
+
+  error.classList.remove('show');
+
+  const groups = parseInput(input);
+  if (groups.length === 0) {
+    error.textContent = '그룹을 인식하지 못했어요. 형식을 확인해주세요.';
+    error.classList.add('show');
+    outputArea.classList.remove('show');
+    return;
+  }
+
+  const json = groupsToJson(groups);
+  document.getElementById('json-output').value = json;
+  renderPreview(groups);
+  outputArea.classList.add('show');
+  outputArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+document.getElementById('copy-btn').onclick = () => {
+  const json = document.getElementById('json-output').value;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(json).then(() => {
+      showToast('클립보드에 복사됨 ✓');
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = '복사됨 ✓';
+      btn.style.background = '#2a7a40';
+      setTimeout(() => { btn.textContent = '클립보드에 복사'; btn.style.background = ''; }, 1500);
+    });
+  } else {
+    document.getElementById('json-output').select();
+    document.execCommand('copy');
+    showToast('복사됨 ✓');
+  }
+};
+
+document.getElementById('clear-btn').onclick = () => {
+  document.getElementById('input').value = '';
+  document.getElementById('output-area').classList.remove('show');
+  document.getElementById('error').classList.remove('show');
+};
+</script>
+
+</body>
+</html>
